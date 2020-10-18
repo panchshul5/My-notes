@@ -1,22 +1,39 @@
 package com.pushpendra.practice.android.mynote
 
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_note_detail.*
-import kotlinx.android.synthetic.main.note_item.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.activity_add_edit_note.*
 
-class AddEditNoteActivity : AppCompatActivity() {
+
+
+class AddEditNoteActivity : AppCompatActivity(),AddExtraBottomSheetDialogFragment.BottomSheetImageClickableListener {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_note_detail)
+        setContentView(R.layout.activity_add_edit_note)
 
         number_picker_priority.minValue = 1
         number_picker_priority.maxValue = 10
+
+
+        show_bottom_sheet.setOnClickListener {
+            //Toast.makeText(this, "bottom sheet button clicked.", Toast.LENGTH_SHORT).show()
+            Log.d("sheet listener", "sheet buton pressed.")
+
+            val bottomSheetDialogFragment = AddExtraBottomSheetDialogFragment()
+            bottomSheetDialogFragment.show(supportFragmentManager,"Bottom Sheet Fragment")
+        }
+
 
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
 
@@ -32,8 +49,6 @@ class AddEditNoteActivity : AppCompatActivity() {
         }else {
             title = "Add Note"
         }
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -85,5 +100,10 @@ class AddEditNoteActivity : AppCompatActivity() {
         const val DESCRIPTION_EXTRA = "com.pushpendra.practice.android.mynote.DESCRIPTION_EXTRA"
         const val PRIORITY_EXTRA = "com.pushpendra.practice.android.mynote.PRIORITY_EXTRA"
         const val ID_EXTRA = "com.pushpendra.practice.android.mynote.ID_EXTRA"
+
+    }
+
+    override fun onButtonClicked(image: Bitmap) {
+        uploaded_image_view.setImageBitmap(image)
     }
 }
